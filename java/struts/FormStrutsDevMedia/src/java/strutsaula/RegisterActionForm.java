@@ -54,7 +54,7 @@ public class RegisterActionForm extends ActionForm {
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
-            errors.add("nome", new ActionMessage("error.name.required"));
+            //errors.add("nome", new ActionMessage("error.name.required"));
         return errors;
     }
 }

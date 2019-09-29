@@ -7,6 +7,7 @@
 
 <struts-config>
     <form-beans>
+        <form-bean name="FileUploadActionForm" type="com.br.fabionazario.fileupload.FileUploadActionForm"/>
         <form-bean name="RegisterActionForm" type="strutsaula.RegisterActionForm"/>
     </form-beans>
     
@@ -18,15 +19,15 @@
         <forward name="failure" path="/index.jsp"/>
         <forward name="success" path="/loginFailurePage.jsp"/>
         
-        <forward name="welcome" path="/Welcome.do"/>
     </global-forwards>
 
     <action-mappings>
-        <action input="/register.jsp" name="RegisterActionForm" path="/registerpath" scope="session" type="strutsaula.RegisterAction"/>
+        <action input= "/fileUpload/fileUpload.jsp"  name="FileUploadActionForm" path="/fileupload"   scope="session" type="com.br.fabionazario.fileupload.FileUploadAction"/>
+        <action input="/register.jsp" name="RegisterActionForm"  path="/registerpath" scope="session" type="strutsaula.RegisterAction"/>
         <action path="/Welcome" forward="/welcomeStruts.jsp"/>
     </action-mappings>
     
-    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/> 
 
     <message-resources parameter="com/myapp/struts/ApplicationResource"/>    
     

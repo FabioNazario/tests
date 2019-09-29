@@ -4,26 +4,26 @@
  * and open the template in the editor.
  */
 
-package strutsaula;
-
+package com.br.fabionazario.fileupload;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.upload.FormFile;
 
 /**
  *
  * @author fabionazario
  */
-public class RegisterAction extends org.apache.struts.action.Action {
+public class FileUploadAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    private static final String FAILURE = "failure";
-
+    
+    
+            
     /**
      * This is the action called from the Struts framework.
      *
@@ -39,16 +39,19 @@ public class RegisterAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         
-
+        FileUploadActionForm fuaf = (FileUploadActionForm) form;
         
-        HttpSession hs = request.getSession(true);
-        RegisterActionForm raf = (RegisterActionForm)form;
-        System.out.println(raf.getEmail());
-        System.out.println(raf.getSenha());
-        
-        if (1==1){
-            return mapping.findForward(SUCCESS);
+        for (FormFile f: fuaf.getDoc0()){
+            System.out.println(f.getContentType());
+            System.out.println(f.getInputStream());
+            System.out.println("");
         }
-            return mapping.findForward(FAILURE);
+        
+        fuaf.getDoc0().get(0).getContentType();
+        
+        System.out.println(fuaf.getDoc0().toString());
+        
+        System.out.println();
+        return mapping.findForward(SUCCESS);
     }
 }

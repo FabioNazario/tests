@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/WEB-INF/tiles-defs.xml</file>
+            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/WEB-INF/struts-config.xml</file>
             <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/src/java/strutsaula/RegisterAction.java</file>
             <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/src/java/strutsaula/RegisterActionForm.java</file>
-            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/WEB-INF/validation.xml</file>
-            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/WEB-INF/validator-rules.xml</file>
-            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/register.jsp</file>
+            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/loginFailurePage.jsp</file>
+            <file>file:/home/fabionazario/NetBeansProjects/FormStrutsDevMedia/web/index.jsp</file>
         </group>
     </open-files>
 </project-private>
