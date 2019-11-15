@@ -14,9 +14,10 @@ public class Run {
     
     public static void main(String[] args) {
         String[] resultado = ResultadoMegasena.obtemUltimoResultado();
-        
+        System.out.println("O Resultado é: ");
         for (String dezena: resultado) {
               System.out.print(dezena + " ");
         }
+        System.out.println("\n");
     }
 }
