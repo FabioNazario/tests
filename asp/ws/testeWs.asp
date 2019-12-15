@@ -1,120 +1,92 @@
+
 <%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
 <!--#include file="JSON_2.0.4.asp"-->
 <!--#include file="json2.asp"-->
-
+<!--#include file="jsonWsUtil.asp"-->
+       
 <%	
-	On Error resume next
-	
-	response.ContentType = "application/json"
-	response.Charset = "utf-8"
-	
-	errorHandler()
+    Session("tratarErros") = true
+	Response.AddHeader "Content-Type", "json/application;charset=UTF-8"
+    Response.CodePage = 65001
+    Response.CharSet = "UTF-8"
+   
+    'Se false, mostra os erros na tela sem tratamento
+    if Session("tratarErros")  then On Error resume next
+
 	'Configuracao dos atributos esperados no request do WS
 	arrAttrEsperados = Array( "operacao"_
 					         ,"chave_validacao"_
 					         ,"cpf"_
 					         ,"senha")
-	
-	strJson = recuperaJson()
-	
+	 
+	reqJson = recuperaJson()
+
 	'Verifica se a mensagem do request eh um json
-	isJsonOk(strJson)
+	call isJsonOk(reqJson)
 	
 	'Verifica se existem os atributos esperados pelo ws
-	atributosEsperadosExistem arrAttrEsperados, strJson
+	call verificaAtributosEsperadosExistem (arrAttrEsperados, reqJson)
 	
-	
-	''''Aqui fica a regra para montagem da resposta
-	retornaRespostaWs(montaJsonResponse(strJson))
-	
-	'Caso ocorra um erro inesperado
 
+    
+    set reqObj = JSON.parse(reqJson)
+
+    'Roda a rotina dependendo do conteudo do atributo 'OPERACAO'
+    select case uCase(reqObj.operacao)
+        case "RECUPERA_USUARIO"
+            call operacaoRecuperaUsuario(reqJson)
+        case "OUTRA_OPERACAO"
+            call operacaoOutraOperacao(reqJson)
+        
+        case else 'Default
+            call retornaJsonResponseErro("Não existe rotina para essa operação", "5")
+	End Select
+    errorHandler()
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' FUNCTIONS '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''	
-	
-	'Tratamento caso ocorra um erro inesperado
-	function errorHandler()
-		if err.number <> 0 then
-			retornaRespostaWs(montaJsonResponseErro(err.description , cStr(err.number)))
-			response.end
-		end if
-	end function
 
-	
-	function atributosEsperadosExistem(arrAttrEsperados, strJson) On Error resume next
-		
-		For Each attr In arrAttrEsperados
-			if inStr(strJson, attr) = 0 then
-				retornaRespostaWs(montaJsonResponseErro("Atributo '" & attr & "' não encontrado","3"))
-			end if
-		Next
-		
-		errorHandler()
-	end function
-	
-	
-	function montaJsonResponseErro(mensagem, codigo) On Error resume next
-		Set jsonObj = jsObject()
-		jsonObj("mensagem") = mensagem
-		jsonObj("codigo") = codigo
-		montaJsonResponseErro = toJSON(jsonObj)
-		set jsonObj = nothing
-		errorHandler()
-	end function 
-	
+    private function operacaoRecuperaUsuario(reqJson) 
+        if Session("tratarErros")  then On Error resume next
 
-	function montaJsonResponse(strJson)
-		On Error resume next
-		Set req = JSON.parse(strJson)
+        Set reqObj = JSON.parse(reqJson)
 		Set resp = jsObject()
+        
+        if ( not(reqObj.cpf = "11111111111" and reqObj.senha = "senha esperada") ) then
+            call retornaJsonResponseErro("Cpf e/ou senha inválidos", "4")
+        end if
 		
 		'Apenas um exemplo de uso do WS
 	    resp("mensagem")  = "Sucesso"
 		resp("codigo")    = "0"
-		resp("resposta1") = req.operacao 		
-		resp("resposta2") = req.chave_validacao 
-		resp("res")       = req.cpf		      	
-		resp("bayblade")  = req.senha
-	
-		montaJsonResponse = toJSON(resp)
+		resp("resposta1") = reqObj.operacao & "ãããã"		
+		resp("resposta2") = reqObj.chave_validacao 
+		resp("res")       = reqObj.cpf		      	
+		resp("bayblade")  = reqObj.senha
+
+		retornaRespostaWs(toJSON(resp))
 		
 		set resp = nothing
-		
-		errorHandler()
 	end function
 
-	
-	function recuperaJson() On Error resume next
-		bytecount = Request.TotalBytes
-		bytes = Request.BinaryRead(bytecount)
-		if bytecount = 0 then
-			retornaRespostaWs(montaJsonResponseErro("Requisição precisa ter um corpo.", "1"))
-			response.end
-		end if
-		Set stream = Server.CreateObject("ADODB.Stream")
-		stream.Type = 1 'adTypeBinary              
-		stream.Open()                                   
-			stream.Write(bytes)
-			stream.Position = 0                             
-			stream.Type = 2 'adTypeText                
-			stream.Charset = "utf-8"                      
-			recuperaJson = stream.ReadText() 'here is your json as a string                
-		stream.Close()
-		Set stream = nothing
+'''''
+    private function operacaoOutraOperacao(reqJson) 
+        if Session("tratarErros")  then On Error resume next
+
+        Set reqObj = JSON.parse(reqJson)
+		Set resp = jsObject()
 		
-		errorHandler()
-	end function
-	
-	
-	function retornaRespostaWs(json)
-		response.write json
-		response.end
-	end function
-	
-	
-	function isJsonOK(jsonInput) On Error resume next
-		set obj = JSON.parse(jsonInput)
-		if err.number <> 0 then
-			retornaRespostaWs(montaJsonResponseErro("Json inválido." , "3"))
-		end if
+		'Apenas um exemplo de uso do WS
+	    resp("respostaDiferente1")  = "Sucesso"
+		resp("respostaDiferente2")  = "0"
+		resp("respostaDiferente3")  = reqObj.operacao 		
+		resp("respostaDiferente4")  = reqObj.chave_validacao 
+		resp("respostaDiferente5")  = reqObj.cpf		      	
+		resp("respostaDiferente6")  = reqObj.senha
+
+		retornaRespostaWs(toJSON(resp))
+		
+		set resp = nothing
 	end function
 %>
+
