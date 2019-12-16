@@ -1,6 +1,3 @@
-
-<%@LANGUAGE="VBSCRIPT" CODEPAGE="65001"%>
-<!--#include file="JSON_2.0.4.asp"-->
 <!--#include file="json2.asp"-->
 <!--#include file="jsonWsUtil.asp"-->
        
@@ -36,8 +33,7 @@
         case "RECUPERA_USUARIO"
             call operacaoRecuperaUsuario(reqJson)
         case "OUTRA_OPERACAO"
-            call operacaoOutraOperacao(reqJson)
-        
+            call operacaoOutraOperacao(reqJson)       
         case else 'Default
             call retornaJsonResponseErro("Não existe rotina para essa operação", "5")
 	End Select
@@ -48,25 +44,29 @@
 
     private function operacaoRecuperaUsuario(reqJson) 
         if Session("tratarErros")  then On Error resume next
-
         Set reqObj = JSON.parse(reqJson)
-		Set resp = jsObject()
-        
-        if ( not(reqObj.cpf = "11111111111" and reqObj.senha = "senha esperada") ) then
+
+        if ( not(reqObj.cpf = "11111111111" and reqObj.senha = "CHAVEíííí") ) then
             call retornaJsonResponseErro("Cpf e/ou senha inválidos", "4")
         end if
 		
-		'Apenas um exemplo de uso do WS
-	    resp("mensagem")  = "Sucesso"
-		resp("codigo")    = "0"
-		resp("resposta1") = reqObj.operacao & "ãããã"		
-		resp("resposta2") = reqObj.chave_validacao 
-		resp("res")       = reqObj.cpf		      	
-		resp("bayblade")  = reqObj.senha
-
-		retornaRespostaWs(toJSON(resp))
+		dim conexao : set conexao = JSON.parse("{}")
+		conexao.set "operacao"			, "retorno"
+		conexao.set "codigo_retorno"	, reqObj.cpf
+		conexao.set "chave_retorno"		, reqObj.chave_validacao
+		conexao.set "chave_validacao"	, reqObj.cpf
 		
-		set resp = nothing
+		dim dados : set dados = JSON.parse("{}")
+		dados.set "dado1"			, reqObj.dados.dado1
+		dados.set "dado2"			, reqObj.dados.dado2
+		dados.set "dado3"			, reqObj.dados.dado3
+		dados.set "dado4"			, reqObj.dados.dado4
+		
+		dim resp : set resp = JSON.parse("{}")
+		resp.set "conexao"		, conexao
+		resp.set "dados"        , dados
+
+		retornaRespostaWs(JSON.stringify(resp))
 	end function
 
 '''''
@@ -74,17 +74,17 @@
         if Session("tratarErros")  then On Error resume next
 
         Set reqObj = JSON.parse(reqJson)
-		Set resp = jsObject()
 		
 		'Apenas um exemplo de uso do WS
-	    resp("respostaDiferente1")  = "Sucesso"
-		resp("respostaDiferente2")  = "0"
-		resp("respostaDiferente3")  = reqObj.operacao 		
-		resp("respostaDiferente4")  = reqObj.chave_validacao 
-		resp("respostaDiferente5")  = reqObj.cpf		      	
-		resp("respostaDiferente6")  = reqObj.senha
+		dim resp : set resp = JSON.parse("{}")
+	    resp.set "respostaDiferente1" , "Sucesso"
+		resp.set "respostaDiferente2" , "0"
+		resp.set "respostaDiferente3" , reqObj.operacao 		
+		resp.set "respostaDiferente4" , reqObj.chave_validacao 
+		resp.set "respostaDiferente5" , reqObj.cpf		      	
+		resp.set "respostaDiferente6" , reqObj.senha
 
-		retornaRespostaWs(toJSON(resp))
+		retornaRespostaWs(JSON.stringify(resp))
 		
 		set resp = nothing
 	end function

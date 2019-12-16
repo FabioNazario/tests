@@ -1,7 +1,6 @@
 <%
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' JSON WS UTIL  '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''	
-	
 	'Tratamento caso ocorra um erro inesperado
 	function errorHandler()
 		if err.number <> 0 then
@@ -24,11 +23,12 @@
 ''''''	
 	function retornaJsonResponseErro(mensagem, codigo) 
         if Session("tratarErros") then On Error resume next
-
-		Set jsonObj = jsObject()
-		jsonObj("mensagem") = mensagem
-		jsonObj("codigo") = codigo
-		retornaRespostaWs(toJSON(jsonObj))
+		
+		dim resp : set resp = JSON.parse("{}")
+		resp.set "mensagem"		, mensagem
+		resp.set "codigo"        , codigo
+		
+		retornaRespostaWs(JSON.stringify(resp))
 	end function 	
 ''''''	
 	function recuperaJson() 
@@ -56,7 +56,7 @@
 ''''''	
 	function retornaRespostaWs(json)
         errorHandler()
-		response.write json
+		response.write ConvertFromUTF8(json)
 		response.end
 	end function
 ''''''	
@@ -65,5 +65,20 @@
 		if err.number <> 0 then
 			call retornaJsonResponseErro("Json inválido." , "2")
 		end if
+	end function
+''''''
+	function ConvertFromUTF8(sIn)
+
+	   Dim oIn: Set oIn = CreateObject("ADODB.Stream")
+
+	   oIn.Open
+	   oIn.CharSet = "WIndows-1252"
+	   oIn.WriteText sIn
+	   oIn.Position = 0
+	   oIn.CharSet = "UTF-8"
+	   
+	   ConvertFromUTF8 = oIn.ReadText
+	   oIn.Close
+
 	end function
 %>
