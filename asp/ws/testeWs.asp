@@ -68,14 +68,14 @@
 		
 		dim resp : set resp = JSON.parse("{}")
 		resp.set "conexao"		, conexao
-		resp.set "dados"        , dados
+		resp.set "dados"		, dados
 
 		retornaRespostaWs(JSON.stringify(resp))
 	end function
 	
 '''''
     function operacaoOutraOperacao(reqJson)
-		'EXEMPLO DE CHAMADA E RESPOSTA COM "SUB OBJETOS"
+		'EXEMPLO DE CHAMADA E RESPOSTA
 		'{
 		'	"operacao": "outra_operacao",
 		'	"chave_validacao": "chave_validacao",
@@ -89,12 +89,12 @@
 		
 		'Apenas um exemplo de uso do WS
 		dim resp : set resp = JSON.parse("{}")
-	    resp.set "cpf_da_requisicao" , pegaAtributo(reqObj,"cpf")
-		resp.set "chave_validacao_da_requisicao" , pegaAtributo(reqObj,"chave_validacao")
-		resp.set "senha_da_requisicao" 			 , pegaAtributo(reqObj,"senha")
-		resp.set "operacao_da_requisicao" , pegaAtributo(reqObj,"operacao")
-		resp.set "atributo1" , "exemplo de atributo fixo"	      	
-		resp.set "atributo2" , "outro atributo com conteúdo fixo"
+	    resp.set "cpf_da_requisicao"				, pegaAtributo(reqObj,"cpf")
+		resp.set "chave_validacao_da_requisicao"	, pegaAtributo(reqObj,"chave_validacao")
+		resp.set "senha_da_requisicao"				, pegaAtributo(reqObj,"senha")
+		resp.set "operacao_da_requisicao"			, pegaAtributo(reqObj,"operacao")
+		resp.set "atributo1"						, "exemplo de atributo fixo"	      	
+		resp.set "atributo2"						, "outro atributo com conteúdo fixo"
 
 		retornaRespostaWs(JSON.stringify(resp))
 		
