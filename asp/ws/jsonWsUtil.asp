@@ -8,17 +8,6 @@
 			response.end
 		end if
 	end function
-
-''''''		
-	function verificaAtributosEsperadosExistem(arrAttrEsperados, strJson) 
-        if Session("tratarErros") then On Error resume next	
-        For Each attr In arrAttrEsperados
-			if inStr(uCase(strJson), """"&uCase(attr)&"""") = 0 then
-				call retornaJsonResponseErro("Atributo '" & attr & "' não encontrado","3")
-			end if
-		Next
-        errorHandler()
-	end function
 	
 ''''''	
 	function retornaJsonResponseErro(mensagem, codigo) 
@@ -80,5 +69,24 @@
 	   ConvertFromUTF8 = oIn.ReadText
 	   oIn.Close
 
+	end function
+'''''
+	function pegaAtributo(objIn,att)
+		if Session("tratarErros")  then On Error resume next
+		set obj = objIn
+		
+		atributo = split(att,".")
+		qtdAtributos = uBound(atributo)
+		
+		for i = 0 To qtdAtributos -1
+			set obj = obj.get(atributo(i))
+		next
+
+		pegaAtributo = obj.get(atributo(qtdAtributos))
+		
+		if (pegaAtributo = "" or pegaAtributo = "[object Object]") then
+			call retornaJsonResponseErro("Atributo '" & att & "' não encontrado." , "3")
+		end if
+		
 	end function
 %>
