@@ -72,6 +72,7 @@
 	end function
 '''''
 	function pegaAtributo(objIn,att)
+		
 		if Session("tratarErros")  then On Error resume next
 		set obj = objIn
 		
@@ -81,10 +82,15 @@
 		for i = 0 To qtdAtributos -1
 			set obj = obj.get(atributo(i))
 		next
-
+		
 		pegaAtributo = obj.get(atributo(qtdAtributos))
 		
-		if (pegaAtributo = "" or pegaAtributo = "[object Object]") then
+		if pegaAtributo = "[object Object]" then
+		    set pegaAtributo = nothing
+			set pegaAtributo = obj.get(atributo(qtdAtributos))
+		end if
+		
+		if (varType(pegaAtributo) = vbEmpty) then
 			call retornaJsonResponseErro("Atributo '" & att & "' não encontrado." , "3")
 		end if
 		

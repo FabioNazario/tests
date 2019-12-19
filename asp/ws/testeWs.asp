@@ -44,8 +44,8 @@
 			'	"cpf": "12345678910",
 			'	"senha":"123mudar",
 			'		"dados": {
-			'			"dado1": "dado de entrada 1",
-			'			"dado2": "dado de entrada 2"
+			'			"dado1": "um dado com caracter especial áéóú",
+			'			"dado2": ""
 			'		}
 			'}
 	
@@ -65,6 +65,8 @@
 		dim dados : set dados = JSON.parse("{}")
 		dados.set "dado1resposta"	, pegaAtributo(reqObj,"dados.dado1")
 		dados.set "dado2resposta"	, pegaAtributo(reqObj,"dados.dado2")
+		dados.set "resposta_objeto_da_rquisicao", pegaAtributo(reqObj,"dados")
+		
 		
 		dim resp : set resp = JSON.parse("{}")
 		resp.set "conexao"		, conexao
