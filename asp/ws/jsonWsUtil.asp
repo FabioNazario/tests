@@ -86,7 +86,7 @@
 		pegaAtributo = obj.get(atributo(qtdAtributos))
 		
 		if pegaAtributo = "[object Object]" then
-		    set pegaAtributo = nothing
+			set pegaAtributo = nothing
 			set pegaAtributo = obj.get(atributo(qtdAtributos))
 		end if
 		
