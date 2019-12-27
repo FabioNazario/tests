@@ -289,16 +289,16 @@
 	'EXEMPLO 1
     function operacaoExemploUm(reqJson)
 		'EXEMPLO DE CHAMADA E RESPOSTA COM "SUB OBJETOS"
-			{
-				"operacao": "EXEMPLO_1",
-				"chave_validacao": "chave_validacao",
-				"cpf": "12345678910",
-				"senha":"123mudar",
-					"dados": {
-						"dado1": "um dado com caracter especial áéóú",
-						"dado2": ""
-					}
-			}
+			'{
+			'	"operacao": "EXEMPLO_1",
+			'	"chave_validacao": "chave_validacao",
+			'	"cpf": "12345678910",
+			'	"senha":"123mudar",
+			'		"dados": {
+			'			"dado1": "um dado com caracter especial áéóú",
+			'			"dado2": ""
+			'		}
+			'}
 	
         if Session("tratarErros")  then On Error resume next
         Set reqObj = JSON.parse(reqJson)
